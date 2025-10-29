@@ -4,13 +4,15 @@ import App from "./App"
 import "./index.css"
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  const useMsw = (import.meta && import.meta.env && import.meta.env.VITE_ENABLE_MSW) !== 'false'
+  if (!useMsw) {
     return
   }
  
   const { worker } = await import('./mocks/browser')
   const result = await worker.start({
     onUnhandledRequest: 'bypass',
+    serviceWorker: { url: '/mockServiceWorker.js' },
   })
   
   // Seed the database
