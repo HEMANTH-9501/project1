@@ -20,12 +20,14 @@ export default function JobModal({ job, onClose, onSave, addToast }) {
   const saveMutation = useMutation(
     async (data) => {
       const url = job ? `/api/jobs/${job.id}` : "/api/jobs"
+      console.log(url);
       const method = job ? "PATCH" : "POST"
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
+      console.log(response);
       if (!response.ok) throw new Error("Failed to save job")
       return response.json()
     },
